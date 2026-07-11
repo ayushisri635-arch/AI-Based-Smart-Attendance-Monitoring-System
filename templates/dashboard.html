@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Attendance Console{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Overview</div>
+  <h1>Dashboard</h1>
+  <p>Snapshot of registered people and today's attendance.</p>
+</div>
+
+<div class="stat-grid">
+  <div class="stat">
+    <div class="value">{{ people_count }}</div>
+    <div class="label">Registered People</div>
+  </div>
+  <div class="stat">
+    <div class="value">{{ todays_attendance | length }}</div>
+    <div class="label">Present Today</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Registered People
+    <a href="{{ url_for('register') }}" class="btn btn-secondary" style="text-decoration:none;">+ Add Person</a>
+  </div>
+  {% if people %}
+    <table>
+      <thead>
+        <tr><th>Code</th><th>Name</th></tr>
+      </thead>
+      <tbody>
+        {% for p in people %}
+        <tr><td>{{ p.person_code }}</td><td>{{ p.name }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No one registered yet. Add your first person to get started.</div>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Today's Attendance
+    <a href="{{ url_for('attendance') }}" class="btn btn-secondary" style="text-decoration:none;">View All</a>
+  </div>
+  {% if todays_attendance %}
+    <table>
+      <thead>
+        <tr><th>Code</th><th>Name</th><th>Time</th></tr>
+      </thead>
+      <tbody>
+        {% for r in todays_attendance %}
+        <tr><td>{{ r.person_code }}</td><td>{{ r.name }}</td><td><span class="badge">{{ r.time }}</span></td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No attendance marked yet today.</div>
+  {% endif %}
+</div>
+{% endblock %}

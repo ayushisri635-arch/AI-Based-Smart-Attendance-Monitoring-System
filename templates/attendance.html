@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Attendance — Attendance Console{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Live Scanning</div>
+  <h1>Attendance</h1>
+  <p>Run the scanner to recognize faces via the webcam and mark attendance automatically.</p>
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Scanner
+    <form method="POST" action="{{ url_for('recognize') }}" data-confirm-camera>
+      <button type="submit" class="btn">Start Scan</button>
+    </form>
+  </div>
+  {% if marked %}
+    <p style="color: var(--success); font-family: var(--mono); font-size: 13px;">
+      Marked present this session: {{ marked | join(', ') }}
+    </p>
+  {% else %}
+    <p style="color: var(--text-dim); font-size: 14px;">
+      Click "Start Scan" to open the camera window. Press Q in that window to stop.
+    </p>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-title">Records</div>
+  {% if records %}
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.person_code }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.date }}</td>
+          <td><span class="badge">{{ r.time }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No attendance records yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
